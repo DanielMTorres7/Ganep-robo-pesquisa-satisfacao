@@ -1,9 +1,11 @@
 #######################################################  Configuração  ############################################################
+# Configurações iniciais e definição de variáveis globais.
 # [paciente] para nome do paciente
 # [alta] para data da alta do paciente
 # \n para quebras de linha
 
 mensagemWhatsapp = "Prezado(a) [paciente]," + "\n" +"Gostaríamos de convidá-lo (a) a participar da pesquisa de satisfação do Ganep Lar. "+"\n"+"Sua opinião é extremamente valiosa para nós. "+"\n"+"Levará aproximadamente 1 minuto do seu tempo e suas respostas nos ajudarão a aprimorar continuamente nossos serviços para atender às suas necessidades de maneira mais eficaz."+"\n"+"Para acessar a pesquisa de satisfação, clique no link abaixo:"
+# Define o modelo da mensagem do WhatsApp que será enviada.
 
 mensagemEmail = "Olá Bom dia.\nEstou encaminhando abaixo uma lista com os equipamentos que devem ser retirados, referente aos pacientes que tiveram alta"
 
