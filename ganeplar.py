@@ -1,11 +1,14 @@
+# Importando bibliotecas necessárias
 import time
 import pyautogui
 import subprocess
 import pyperclip
 
+# Função para adicionar um delay
 def delay(tempo):
     time.sleep(tempo)
 
+# Função para escrever texto usando o clipboard
 def write(texto, tempo=1, enter=False):
     pyperclip.copy(texto)
     press('ctrl','v')
@@ -15,6 +18,7 @@ def write(texto, tempo=1, enter=False):
     delay(tempo)
     return True
 
+# Função para clicar em uma posição específica na tela
 def click(x,y,duplo=False):
     old = pyautogui.PAUSE
     pyautogui.PAUSE = .05
@@ -22,6 +26,7 @@ def click(x,y,duplo=False):
     if duplo: pyautogui.click(x, y)
     pyautogui.PAUSE = old
 
+# Função para pressionar teclas de atalho
 def press(a,b=None,c=None,tempo=1):
     if c: pyautogui.hotkey(a,b,c)
     elif b: pyautogui.hotkey(a,b)
@@ -30,7 +35,7 @@ def press(a,b=None,c=None,tempo=1):
     print(pyautogui.PAUSE)
     return True
                 
-# Função para dar ALT + F4
+# Função para fechar janelas ou processos
 def fechar(pasta = ""):
     if not pasta: 
         press('alt','f4')
@@ -44,48 +49,38 @@ def fechar(pasta = ""):
     else:
         subprocess.call(["taskkill","/F","/IM", "explorer.exe","/FI", "WINDOWTITLE eq "+pasta+".csv - Resultados da Pesquisa em updater"])
 
-
+# Função para abrir o aplicativo GanepLar
 def abrirGanepLar():
     clicar('iw-ganeplar.png', 1, 0.85, duplo = True, confirmacao='login.png', esperaMax=60)
-
-    # Realizando Login
     clicar('login.png', 2, 0.9,pos=[497, 313, 1097, 713])
     write("Ganeplar@7823")
     delay(1)
     press('enter',tempo=10)
     
+# Função para baixar uma planilha
 def baixarPlanilha(path,tempo):
-    # Caminho para baixar a planilha
     delay(2)
     clicar('administrador.png', 1,.85,confirmacao='planilhas_rpa.png')
     if not clicar('planilhas_rpa.png', 1,.85,confirmacao='satisfacao.png',restart=False,):
         baixarPlanilha(path,tempo)
     else:
-        # selecionando a planilha
         clicar(path, tempo, .8)
 
-
+# Função para salvar a planilha
 def salvar(path,nome,tempo = 1):
-
     baixarPlanilha(path,tempo)
-    # Preparando a planilha para exportação
     clicar('exportar.png',5,.7,pos=[ 299, 0, 899, 413])
     clicar('desktop.png', conf=0.85,duplo = True, pos=[293, 81, 893, 681])
     clicar('ganep.png',duplo = True, pos=[284, 40, 884, 640])
     clicar('chatbot.png',duplo = True, pos=[285, 39, 885, 639])
     clicar('planilhas.png',duplo = True, pos=[285, 39, 885, 639])
     clicar('nomearquivo.png')
-
-    # Nomeando a planilha
     write(nome)
-
-    # Salvando a planilha em Desktop    
     clicar('salvar.png', 3, .7)
-
-    # Fechando a planilha
     fechar()
     while not esperarTela('rel_fechado.png',vezes=80): fechar()
 
+# Função para esperar por uma imagem na tela
 def esperarTela(path, tempo=0, conf=.95, vezes=0, clicar=False, duplo=False, confirmacao='', restart=True, esperaMax=25, pos=[0,0,1600,900], posconf=[0,0,1600,900]):
     confiabilidade = conf
     tentativas = 0
@@ -128,9 +123,9 @@ def clicar(path, tempo=0, conf=.95, duplo = False, vezes=0,confirmacao='',restar
     try:
         return esperarTela(path, tempo, conf, vezes=vezes, clicar=True, duplo=duplo,confirmacao=confirmacao,restart=restart,esperaMax=esperaMax, pos=pos, posconf=posconf)
     except:
-        return False        
+        return False 
 
-
+# Função para baixar várias planilhas
 def baixarplanilhas():
     salvar("satisfacao.png","realwpp.csv")
     salvar("equipamentos.png","realwpp.csv")
@@ -139,7 +134,6 @@ def baixarplanilhas():
     delay(1)
     clicar('confirmar_fechar.png',pos=[ 375, 260, 1175, 660]) 
 
-
+# Executando as funções principais
 abrirGanepLar()
 baixarplanilhas()
-
